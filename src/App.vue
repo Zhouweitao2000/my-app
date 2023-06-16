@@ -15,6 +15,9 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="less" >
+body,html,h3{
+  margin: 0;
+  padding: 0;
+}
 </style>
