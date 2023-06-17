@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import ElementUI from 'element-ui';
 import store from './store';
+import "./api/mock"
 
 Vue.config.productionTip = false
 
