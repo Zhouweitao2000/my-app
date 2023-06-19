@@ -52,8 +52,12 @@
       </el-card>
 
       <div class="graph">
-        <el-card shadow="hover" style="height: 260px"></el-card>
-        <el-card shadow="hover" style="height: 260px"></el-card>
+        <el-card shadow="hover" style="height: 260px">
+          <div ref="echarts2" style="height: 260px" ></div>
+        </el-card>
+        <el-card shadow="hover" style="height: 260px">
+          <div ref="echarts3" style="height: 240px" ></div>
+        </el-card>
       </div>
     </el-col>
   </el-row>
@@ -67,7 +71,7 @@ export default {
     return {
       tableData: [],
       tableLabel: {
-        name: "课程",
+        name: "品牌",
         todayBuy: "今日购买",
         monthBuy: "本月购买",
         totalBuy: "总购买",
@@ -114,40 +118,129 @@ export default {
   },
   mounted() {
     getData().then(({ data }) => {
-      const { tableData } = data.data;
+      // console.log(data)
+      const { tableData,orderData,userData,videoData} = data.data;
       console.log(data.data);
+      // console.log(tableData)
       this.tableData = tableData;
-
       const echarts1 = echarts.init(this.$refs.echarts1);
 
-      let echarts1Option = {};
+      // 折线图
+      const echarts1Option = {};
 
-      const { orderData } = data.data;
+      
       const xAxis = Object.keys(orderData.data[0]);
+      // console.log(xAxis)
 
-      const xAxisData = {
+      const xAxisData1={
         data:xAxis
       }
-
-      echarts1Option.xAxis= xAxisData
-      echarts1Option.yAxis= {}
+      // console.log(xAxisData1)
+      const xAxisData2 = {
+        data:['1 - 2 月', '3 - 4 月', '5 - 6 月', '7 - 8 月', '9 - 10 月', '11 - 12 月']
+      }
       
-      echarts1Option.legend=xAxisData
-
+      echarts1Option.xAxis= xAxisData2
+      echarts1Option.yAxis= {}
+      echarts1Option.legend=xAxisData1
       echarts1Option.series = []
-      xAxis.forEach(key=>{
+      xAxis.forEach((key)=>{
         echarts1Option.series.push({
           name:key,
           data:orderData.data.map(item=>item[key]),
           type:'line'
         })
+          // console.log(echarts1Option.series)
       })
     
     echarts1.setOption(echarts1Option)
+
+    // 柱状图
+    const echarts2 = echarts.init(this.$refs.echarts2);
+    const echarts2Option ={
+    legend: {
+      // 图例文字颜色
+      textStyle: {
+        color: "#333",
+      },
+    },
+    grid: {
+      left: "20%",
+    },
+    // 提示框
+    tooltip: {
+      trigger: "axis",
+    },
+    xAxis: {
+      type: "category", // 类目轴
+      data: userData.map(item=>item.date),
+      axisLine: {
+        lineStyle: {
+          color: "#17b3a3",
+        },
+      },
+      axisLabel: {
+        interval: 0,
+        color: "#333",
+      },
+    },
+    yAxis: [
+      {
+        type: "value",
+        axisLine: {
+          lineStyle: {
+            color: "#17b3a3",
+          },
+        },
+      },
+    ],
+    color: ["#2ec7c9", "#b6a2de", "#5ab1ef", "#ffb980", "#d87a80", "#8d98b3"],
+    series: [
+      {
+        name:'新增用户',
+        data:userData.map(item=>item.new),
+        type:'bar'
+      },
+      {
+        name:'活跃用户',
+        data:userData.map(item=>item.active),
+        type:'bar'
+
+      }
+    ],
+  
+    }
+    echarts2.setOption(echarts2Option)
+
+    // 饼状图
+     const echarts3 = echarts.init(this.$refs.echarts3);
+     const echarts3Option ={
+          tooltip: {
+            trigger: "item",
+          },
+          color: [
+            "#0f78f4",
+            "#dd536b",
+            "#9462e5",
+            "#a6a6a6",
+            "#e1bb22",
+            "#39c362",
+            "#3ed1cf",
+          ],
+          series: [{
+           
+            data:videoData,
+            type:'pie'
+          }
+           
+          ],
+        }
+      echarts3.setOption(echarts3Option)
     });
   },
 };
 </script>
+
 
 <style lang="less" scoped>
 .user {

@@ -6,7 +6,7 @@ let List = []
 export default {
     getStatisticalData: () => {
         //Mock.Random.float 产生随机数100到8000之间 保留小数 最小0位 最大0位
-        for (let i = 0; i < 7; i++) {
+        for (let i = 0; i < 6; i++) {
             List.push(
                 Mock.mock({
                     苹果: Mock.Random.float(100, 8000, 0, 0),
