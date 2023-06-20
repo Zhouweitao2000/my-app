@@ -16,6 +16,7 @@ export default {
         collapseMenu(state) {
             state.isCollapse = !state.isCollapse
         },
+        // 更新面包屑数据
         selectMenu(state, val) {
             console.log(val, 'val')
             if (val.name !== 'home') {
@@ -24,6 +25,12 @@ export default {
                     state.tabList.push(val)
                 }
             }
+        },
+        // 删除指定tag数据
+        closeTag(state, item) {
+            console.log(item, 'item')
+            const index = state.tabList.findIndex(val => val.name === item.name)
+            state.tabList.splice(index, 1)
         }
     }
 }
